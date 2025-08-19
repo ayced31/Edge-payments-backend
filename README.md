@@ -1,6 +1,6 @@
 # Payments Worker
 
-A simple backend service for payments, built for Cloudflare Workers using Prisma Accelerate.
+A simple backend service for payments, built for Cloudflare Workers using Hono & Prisma Accelerate.
 
 ## Tech Stack
 
