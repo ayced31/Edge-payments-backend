@@ -12,18 +12,17 @@ export const signinSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
-export const updateUserSchema = z.object({
-  firstName: z.string().min(4).optional(),
-  lastName: z.string().min(4).optional(),
-  password: z.string().min(6).optional(),
+export const resetPasswordSchema = z.object({
+  email: z.email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export const transferSchema = z.object({
+  to: z.string().trim().min(1, "Recipent user ID is required"),
   amount: z.number().positive("Amount must be positive"),
-  to: z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid user ID format"),
 });
 
 export type SignupInput = z.infer<typeof signupSchema>;
 export type SigninInput = z.infer<typeof signinSchema>;
-export type UpdateUserInput = z.infer<typeof updateUserSchema>;
 export type TransferInput = z.infer<typeof transferSchema>;
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;

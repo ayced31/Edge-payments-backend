@@ -10,12 +10,9 @@ import {
   SignupResponse,
   SigninResponse,
   UserResponse,
+  ResetPasswordInput,
 } from "../types";
-import {
-  SignupInput,
-  SigninInput,
-  UpdateUserInput,
-} from "../validators/schemas";
+import { SignupInput, SigninInput } from "../validators/schemas";
 import { PrismaClientType } from "../services/prismaService";
 
 export async function signup(
@@ -108,31 +105,49 @@ export async function signin(
   }
 }
 
-export async function updateUser(
+export async function resetPassword(
   c: Context<{ Bindings: Env; Variables: Variables }>,
-  input: UpdateUserInput,
+  input: ResetPasswordInput,
   prisma: PrismaClientType
 ): Promise<Response> {
   try {
-    const userId = c.get("userId");
-
-    const updateData: any = {};
-
-    if (input.firstName) updateData.firstName = input.firstName;
-    if (input.lastName) updateData.lastName = input.lastName;
-    if (input.password) {
-      updateData.passwordHash = await hashPassword(input.password);
-    }
-
-    await prisma.user.update({
-      where: { id: userId },
-      data: updateData,
+    const user = await prisma.user.findUnique({
+      where: { email: input.email },
     });
 
-    return c.json({ message: "Updated successfully" }, 200);
+    if (!user) {
+      return c.json(
+        {
+          message: "If the email exists, password has been reset.",
+          success: true,
+        },
+        200
+      );
+    }
+
+    const passwordHash = await hashPassword(input.password);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { passwordHash },
+    });
+
+    return c.json(
+      {
+        message: "Password reset successfully",
+        success: true,
+      },
+      200
+    );
   } catch (error) {
-    console.error("Update user error:", error);
-    return c.json({ message: "Error updating user." }, 500);
+    console.error("Reset password error:", error);
+    return c.json(
+      {
+        message: "Error resetting password.",
+        success: false,
+      },
+      500
+    );
   }
 }
 

@@ -5,7 +5,7 @@ import { authMiddleware } from "../middlewares/authMiddleware";
 import {
   signupSchema,
   signinSchema,
-  updateUserSchema,
+  resetPasswordSchema,
 } from "../validators/schemas";
 import { Env, Variables } from "../types";
 import { createPrismaClient } from "../services/prismaService";
@@ -41,17 +41,16 @@ userRouter.post(
 );
 
 userRouter.put(
-  "/update",
-  authMiddleware,
-  zValidator("json", updateUserSchema, (result, c) => {
+  "/reset-password",
+  zValidator("json", resetPasswordSchema, (result, c) => {
     if (!result.success) {
-      return c.json({ message: "Error while updating information" }, 411);
+      return c.json({ message: "Invalid email or password format" }, 400);
     }
   }),
   async (c) => {
     const input = c.req.valid("json");
     const prisma = createPrismaClient(c.env);
-    return await userController.updateUser(c, input, prisma);
+    return await userController.resetPassword(c, input, prisma);
   }
 );
 

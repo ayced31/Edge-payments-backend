@@ -40,6 +40,11 @@ export interface SigninResponse {
   token: string;
 }
 
+export interface ResetPasswordInput {
+  email: string;
+  password: string;
+}
+
 export interface BalanceResponse {
   balance: number;
 }
