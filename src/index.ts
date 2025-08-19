@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { logger } from "hono/logger";
 import userRouter from "./routes/userRoutes";
 import accountRouter from "./routes/accountRoutes";
 import { Env, Variables } from "./types";
