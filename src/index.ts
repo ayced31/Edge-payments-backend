@@ -8,7 +8,7 @@ const app = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 app.use("*", cors());
 
-app.get("/", (c) => {
+app.all("/", (c) => {
   return c.json({
     message: "Payments Backend API - Cloudflare Workers",
     status: "healthy",
