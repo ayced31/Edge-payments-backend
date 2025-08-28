@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client/edge";
+import type { PrismaClient } from "@prisma/client/edge";
 
 export interface Env {
   DATABASE_URL: string;
