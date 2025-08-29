@@ -60,7 +60,7 @@ export async function signup(
       token: token,
     };
 
-    return c.json(response, 200);
+    return c.json(response, 201);
   } catch (error) {
     console.error("Signup error:", error);
     return c.json({ message: "Error creating user." }, 500);
