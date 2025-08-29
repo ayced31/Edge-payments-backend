@@ -1,12 +1,12 @@
 import { Hono } from "hono";
-import { cors } from "hono/cors";
 import userRouter from "./routes/userRoutes";
 import accountRouter from "./routes/accountRoutes";
 import { Env, Variables } from "./types";
+import { corsMiddleware } from "./middlewares/corsMiddleare";
 
 const app = new Hono<{ Bindings: Env; Variables: Variables }>();
 
-app.use("*", cors());
+app.use("*", corsMiddleware);
 
 app.all("/", (c) => {
   return c.json({
